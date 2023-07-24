@@ -93,7 +93,7 @@ package.xml dosyasına servis dosyasını oluşturduğumuz paketi ekliyoruz:
 ```
 
 2) server ve client dosyalarının hazırlanması
-bu iki dosyayı belirtili dizinden inceleyerek yapısını anlayabilirsiniz.
+bu iki dosyayı belirli dizinden inceleyerek yapısını anlayabilirsiniz.
 
 ardından yapılacaklar
 
@@ -110,8 +110,28 @@ setup.py dosyasına  dosyasını oluşturduğumuz düğümleri ekliyoruz:
 ...
 ```
 
+1) tum islemler bittiğine göre çalışma alanımızı derleyebiliriz
+   
+```
+cd ~/ros2_ws
+colcon build --packages-select custom_service_examples --symlink-install
+cd
+source .bashrc
+```
+2)
+1. terminalede
+```
+ros2 run custom_service_examples my_server 
+```
+2. terminalede
+```
+ros2 run custom_service_examples my_client
+```
+
+![image](https://github.com/MericSetan/ros2-humble-custom-services-and-examples/assets/65041863/7073f728-c258-42d3-a6b9-83d24ee1eed4)
 
 
+![image](https://github.com/MericSetan/ros2-humble-custom-services-and-examples/assets/65041863/5d9572f3-1e12-46f2-ae48-cbcdaaff60a4)
 
 
 
