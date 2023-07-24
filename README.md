@@ -1,13 +1,6 @@
-# ros2-humble-custom-services-and-examples
+# ROS2 Creating Custom Service
 
-
-
-
-
-
-
-
-## create example package
+## Python bağımlıklı paket oluşturma
 1)
 ```
 cd ~/ros2_ws/src
@@ -21,7 +14,7 @@ ros2 pkg create custom_service_examples --build-type ament_python --dependencies
 cd ..
 colcon build --packages-select custom_service_examples 
 ```
-## create a interface package
+## Interface paketini oluştur
 
 1)
 ```
@@ -42,32 +35,32 @@ colcon build --packages-select custom_service_interface
 ```
 
 
-paketleri oluşturduktan sonra 
-hata almadıysak eğer 
-servisimizi oluşturmaya başlayalım
+Paketleri olusturduktan ve derledikten sonra hata almadıysak eğer sonraki adıma geçip servis dosyasını oluşturmaya başlayabiliriz.
 
-1) servis dosyasını oluşturalım
+## Servisin oluşturulması
+
+1) 
 ```
 cd ros2_ws/src/custom_service_interface/srv
 vim MySrv.srv
 ```
---- burada istekleri(request) ve yanıtları(response) oluşturuyoruz. isim olarak büyük harfle başlaması gerekmektedir
+<--- Burada istekleri(request) ve yanıtları(response) oluşturuyoruz. !İsim olarak büyük harfle başlaması gerekmektedir. --->
 ```
 string meslek
 float32 tecrube
 ---
 int64 maas 
 ```
---- meslek  ve tecrübe bizim isteklerimizdir. maas ise bizim yanıtımız olacaktır. yapı olarak aslında mesaj gibidirler. aralarına üç adet - eklendirğinde (---) servis yapısında istenilen request ve response tanımlanmış olur.
+--- *meslek*  ve *tecrübe* bizim istek mesajımız olacaktır. Devamında *maas* ise bizim yanıt mesajımız olacaktır. Yapı olarak bakıldığında mesajlara çok benzemektedir. Bu iki mesajın arasına üç adet - eklendiğinde (---) servis yapısında istenilen request ve response mesajları tanımlanmış olur. Bu işlem bittikten sonra yapmamız gereken değişiklikler var:
 
-2) package.xml dosyaına eklenecek olan 
+2) ***package.xml*** dosyasına eklenecek olan: 
    
 ```
 <buildtool_depend>rosidl_default_generators</buildtool_depend>
 <exec_depend>rosidl_default_runtime</exec_depend>
 <member_of_group>rosidl_interface_packages</member_of_group>
 ```
-CMakeLists.txt  dosyaına eklenecek olan : 
+***CMakeLists.txt***  dosyasına eklenecek olan : 
 ```
 find_package(rosidl_default_generators REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
@@ -75,31 +68,31 @@ rosidl_generate_interfaces(${PROJECT_NAME}
 )
 ament_export_dependencies(rosidl_default_runtime)
 ```
+
 3) 
 ```
 cd ~/ros2_ws
 colcon build --packages-select custom_service_interface
 ```
-bu şekilde custom_service_interface paketimizin hazırlıklarını bitirmiş oluyoruz.
-sırada custom_service_example paketimiz var. BU paket içerisinde python programlama dilini kullanarak interface paketinde oluşturduğumuz srv dosyasını kullanarak server ve client dosyalarını oluşturacağız.
+Bu şekilde custom_service_interface paketimizin hazırlıklarını bitirmiş oluyoruz.
+Sırada *custom_service_example* paketimiz var. Bu paket içerisinde Python programlama dilini kullanarak *custom_service_interface* paketinde oluşturduğumuz *srv* dosyasını kullanarak server ve client dosyalarını oluşturacağız.
 
-
+## Client Ve Server dosyalarının oluşturulması
 1)
 
-custom_service_examples paketi içerisinde bulunan 
-package.xml dosyasına servis dosyasını oluşturduğumuz paketi ekliyoruz:
+*custom_service_examples* paketi içerisinde bulunan ***package.xml*** dosyasına servis dosyasını oluşturduğumuz paketi ekliyoruz:
 ```
 <depend>custom_service_interface</depend>
 ```
 
-2) server ve client dosyalarının hazırlanması
-bu iki dosyayı belirli dizinden inceleyerek yapısını anlayabilirsiniz.
+2) Server ve Client dosyalarının hazırlanması...
+   *ros2_ws/src/custom_service_examples/custom_service_examples*
+Bu iki dosyayı belirli dizinden inceleyerek yapısını anlayabilirsiniz.
 
-ardından yapılacaklar
+Ardından yapılacaklar
 
 3)
-custom_service_examples paketi içerisinde bulunan 
-setup.py dosyasına  dosyasını oluşturduğumuz düğümleri ekliyoruz:
+*custom_service_examples* paketi içerisinde bulunan ***setup.py*** dosyasına  dosyasına oluşturduğumuz düğümleri ekliyoruz:
 ```
 ...
  entry_points={
@@ -109,8 +102,8 @@ setup.py dosyasına  dosyasını oluşturduğumuz düğümleri ekliyoruz:
         ],
 ...
 ```
-
-1) tum islemler bittiğine göre çalışma alanımızı derleyebiliriz
+## Sonuç
+1) Tüm işlemler bittiğine göre çalışma alanımızı derleyebiliriz.
    
 ```
 cd ~/ros2_ws
@@ -131,7 +124,6 @@ ros2 run custom_service_examples my_client
 ![image](https://github.com/MericSetan/ros2-humble-custom-services-and-examples/assets/65041863/7073f728-c258-42d3-a6b9-83d24ee1eed4)
 
 
-![image](https://github.com/MericSetan/ros2-humble-custom-services-and-examples/assets/65041863/5d9572f3-1e12-46f2-ae48-cbcdaaff60a4)
 
 
 
